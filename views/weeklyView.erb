@@ -1,0 +1,143 @@
+<ul class="nav nav-tabs">
+	<li >
+		<a href="/dailyView" >Daily Schedule</a>
+	</li>
+	<li class="active">
+		<a href="/weeklyView" >Weekly Schedule</a>
+	</li>
+	<li>
+		<a href="/monthlyView" >Monthly Schedule</a>
+	</li>
+	<li>
+		<a href="/groupsView" >Groups</a>
+	</li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" >
+		<div clsas="row">
+			<div class="col-lg-1 ">
+				<a href="/pw"> <img src="/img/left-arrow.png" class="centered"></a>
+			</div>
+			<div class="col-lg-10">
+				<div class = "row">
+					<div class="row">
+						<div class="col-lg-8 col-centered">
+							<div class="col-lg-9 col-centered">
+							<label for="CompactView">Show compact view</label>
+							<input type="checkbox" value="<%= @checked_compact %>" id="CompactView" name="CompactView" onchange="checkIt()">
+							<label for="filterSelect">Filter appointments by category</label>
+							<select id="filterSelect" name="filterSelect">
+								<% types_hash.keys.each do |k| %>
+									<option value= "<%=types_hash[k] %>"><%= k.to_s %></option>
+								<% end %>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row>">
+					<div class="col-lg-12 col-centered">
+						<table class="table-striped table-bordered table" >
+							  <tr>
+									<% (0...7).each do |i| %>
+										<% @current_date = @date + i %>
+										<th class="day">
+											 <%= @current_date.day %>.<%= @current_date.month %>
+											 <br> <%= week_days[@current_date.wday] %>
+										</th>
+									<% end %>
+								</tr>
+								<% if @compact_view %>
+									<tr>
+										<% (1..7).each do |i| %>
+											<% @current_date = @date + i - 1 %>
+											<td class="cell"
+												onclick="openModal('<%= @current_date.to_s %>')" >
+												<div >
+													<% @appointments[i].each do |e| %>
+														 <div class= <%= types_hash.key(e.appointment_type).to_s %> >
+															  <%= e.start_time %> - <%= e.end_time %> | <%= e.description %>
+														 </div>
+													<% end %>
+												</div>
+											</td>
+										<% end %>
+							 	</tr>
+							<% else %>
+								<% (1..24).each do |t| %>
+									<tr>
+										<td class="text-center"><%= t %>:00</td>
+										<% (0..6).each do |d| %>
+											<td class = "single=cell" onclick="openModal('<%= (@date + d).to_s %>')" >
+
+											</td>
+										<% end %>
+									</tr>
+								<% end %>
+							<% end %>
+						</table>
+					</div>
+				</div>
+
+						<div class="modalDialog" id="EventModal">
+							<div class="row">
+								<div class="col-lg-10 col-centered">
+									<div class='panel'>
+										<div class="panel-heading">
+											<h4 class="panel-title" >
+													 Create a new appointment
+										 </h4>
+										</div>
+									 <div title="Close" class="close" onclick="closeModal()">X</div>
+									 <div class="panel-body">
+										 <form action='/createAppointment' method="post">
+											<div class="form-group">
+												<div class="control-group">
+													 <input class="form-control" type="text" id="description" name="description" placeholder="Enter event description">
+												</div>
+												<div class="control-group">
+												 <label for="dselect">Date</label>
+												 <input class="form-control" type="text" id="dselect" name="event_date" value="">
+												</div>
+												<div class="control-group">
+													<label for="startTimeSelect">Start time</label>
+													<input class="form-control" type="text" id="startTime" name="start_time">
+												 </div>
+												 <div class="control-group">
+													 <label for="endTimeSelect">End time</label>
+													 <input class="form-control" type="text" id="endTime" name="end_time">
+												 </div>
+												 <div class="control-group">
+													 <label for="typeSelect">Select type</label>
+													 <select id="typeSelect" name="appointment_type">
+														 <% types_hash.keys.each do |k| %>
+															 <option value= "<%=types_hash[k] %>"><%= k.to_s %></option>
+														 <% end %>
+													 </select>
+												 </div>
+													 <div hidden="hidden">
+														 <input type="text" id="group_id" name="group_id" value="0">
+													 </div>
+
+											 </div>
+											 <div class="control-group">
+													<button type="submit" class="btn btn-success btn-primary">
+														Save
+													</button>
+											 </div>
+										 </form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+</div>
+					 </div>
+				 </div>
+			<div class="col-lg-1">
+
+					<a href="/nw"> <img src="/img/right-arrow.png" class="centered"></a>
+
+			</div>
+		</div>
+	</div>
+</div>

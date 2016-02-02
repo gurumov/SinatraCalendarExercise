@@ -1,0 +1,139 @@
+<ul class="nav nav-tabs center">
+	<li >
+		<a href="/dailyView" >Daily Schedule</a>
+	</li>
+	<li>
+		<a href="/weeklyView" >Weekly Schedule</a>
+	</li>
+	<li class="active">
+		<a href="/monthlyView" >Monthly Schedule</a>
+	</li>
+	<li>
+		<a href="/groupsView" >Groups</a>
+	</li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" >
+		<div clsas="row">
+			<div class="col-lg-1 ">
+				<a href="/pm"> <img src="/img/left-arrow.png" class="centered"></a>
+			</div>
+			<div class="col-lg-10">
+				<div class = "row">
+					<div class= "row">
+						<div class="col-lg-5 col-centered">
+							<label for="filterSelect">Filter appointments by category</label>
+							<select id="filterSelect" name="filterSelect">
+								<% types_hash.keys.each do |k| %>
+									<option value= "<%=types_hash[k] %>"><%= k.to_s %></option>
+								<% end %>
+							</select>
+						</div>
+					</div>
+				<div class = "row">
+					<div class = "col-lg-12 col-centered">
+					<table class="table-striped table-bordered table" style="display: inline-block;" >
+						<tr>
+							<th class="day"> Monday </th>
+							<th class="day"> Tuesday </th>
+							<th class="day"> Wednesday </th>
+							<th class="day"> Thursday </th>
+							<th class="day"> Friday </th>
+							<th class="day"> Sathurday </th>
+							<th class="day"> Sunday </th>
+						</tr>
+						<% (0...weeks_in_month).each do |w| %>
+							<tr>
+								<% (0...7).each do |d| %>
+										<% @current_date = get_date(w,d) %>
+										<% if past?(@current_date) %>
+											<td class="cell past">
+										<% else %>
+											<td class="cell "
+													onclick="openModal('<%= @current_date.to_s %>')" >
+										<% end %>
+											<div class="date  <%=weekend?(@current_date) %> <%= tday?(@current_date) %> ">
+												<%= @current_date.mday %>
+											</div>
+											<br>
+											<div >
+												<% if @current_date.month == @date.month %>
+													<% @appointments[@current_date.mday].each do |e| %>
+														 <div class= <%= types_hash.key(e.appointment_type).to_s %> >
+																<%= e.start_time %> - <%= e.end_time %> | <%= e.description %>
+														 </div>
+													<% end %>
+												<% end %>
+											</div>
+										</td>
+								<% end %>
+							</tr>
+						<% end %>
+					</table>
+				</div>
+
+
+				<div class="modalDialog" id="EventModal">
+					<div class="row">
+						<div class="col-lg-10 col-centered">
+							<div class='panel'>
+								<div class="panel-heading">
+									<h4 class="panel-title" >
+											 Create a new appointment
+								 </h4>
+								</div>
+							 <div title="Close" class="close" onclick="closeModal()">X</div>
+							 <div class="panel-body">
+								 <form action='/createAppointment' method="post">
+									<div class="form-group">
+										<div class="control-group">
+											 <input class="form-control" type="text" id="description" name="description" placeholder="Enter event description">
+										</div>
+										<div class="control-group">
+										 <label for="dselect">Date</label>
+										 <input class="form-control" type="text" id="dselect" name="event_date" value="">
+										</div>
+										<div class="control-group">
+											<label for="startTimeSelect">Start time</label>
+											<input class="form-control" type="text" id="startTime" name="start_time">
+										 </div>
+										 <div class="control-group">
+											 <label for="endTimeSelect">End time</label>
+											 <input class="form-control" type="text" id="endTime" name="end_time">
+										 </div>
+										 <div class="control-group">
+											 <label for="typeSelect">Select type</label>
+											 <select id="typeSelect" name="appointment_type">
+												 <% types_hash.keys.each do |k| %>
+													 <option value= "<%=types_hash[k] %>"><%= k.to_s %></option>
+												 <% end %>
+											 </select>
+										 </div>
+											 <div hidden="hidden">
+												 <input type="text" id="group_id" name="group_id" value="0">
+											 </div>
+
+									 </div>
+									 <div class="control-group">
+											<button type="submit" class="btn btn-success btn-primary">
+												Save
+											</button>
+									 </div>
+								 </form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+				 </div>
+			 </div>
+</div>
+			<div class="col-lg-1">
+
+					<a href="/nm"> <img src="/img/right-arrow.png" class="centered"></a>
+
+			</div>
+		</div>
+	</div>
+</div>

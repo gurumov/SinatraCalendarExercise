@@ -1,0 +1,214 @@
+<ul class="nav nav-tabs center">
+	<li >
+		<a href="/dailyView" >Daily Schedule</a>
+	</li>
+	<li>
+		<a href="/weeklyView" >Weekly Schedule</a>
+	</li>
+	<li>
+		<a href="/monthlyView" >Monthly Schedule</a>
+	</li>
+	<li class="active">
+		<a href="/groupsView" >Groups</a>
+	</li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" >
+		<div clsas="row">
+			<div class="col-lg-1 ">
+				<a href="/pg/<%= @group.id unless @group.nil? %>"> <img src="/img/left-arrow.png" class="centered"></a>
+			</div>
+			<div class="col-lg-10">
+				<div class = "row">
+					<div class= "row">
+						<% unless @group.nil? %>
+							<div class="btn btn-success pull-left"> <%= @group.name %> </div>
+						<% end %>
+						<div class="col-lg-5 col-centered">
+							<% if not @user_groups.empty? %>
+								<% unless @group.nil? %>
+                <label for="GroupMembersSelect">Group members</label>
+                <select id="GroupMembersSelect" name="GroupMembersSelect" >
+                  <% @group.get_members.each do |k| %>
+                    <option value= "<%= k.name %>"><%= k.name %></option>
+                  <% end %>
+                </select>
+              <% end %>
+              <label for="groupSelect">Show groups</label>
+              <select id="groupSelect" name="groupSelect"  onchange="changeGroup()">
+                <option value="">All</option>
+                <% user_groups.each do |g| %>
+                  <option value= "<%= g.id %>"><%= g.name %></option>
+                <% end %>
+              </select>
+							<% end %>
+						</div>
+						<div class="btn btn-success pull-right" onclick="openGroupModal()" >Create group</div>
+						</div>
+
+					</div>
+
+					<% if not @user_groups.empty?  %>
+				<div class = "row">
+					<div class = "col-lg-12 col-centered">
+					<table class="table-striped table-bordered table" style="display: inline-block;" >
+						<tr>
+							<th class="day"> Monday </th>
+							<th class="day"> Tuesday </th>
+							<th class="day"> Wednesday </th>
+							<th class="day"> Thursday </th>
+							<th class="day"> Friday </th>
+							<th class="day"> Sathurday </th>
+							<th class="day"> Sunday </th>
+						</tr>
+						<% (0...weeks_in_month).each do |w| %>
+							<tr>
+								<% (0...7).each do |d| %>
+										<% @current_date = get_date(w,d) %>
+										<% if past?(@current_date) %>
+											<td class="cell past">
+										<% else %>
+											<td class="cell"
+													onclick="openModal('<%= @current_date.to_s %>')" >
+										<% end %>
+											<div class="date  <%=weekend?(@current_date) %> <%= tday?(@current_date) %> ">
+												<%= @current_date.mday %>
+											</div>
+											<br>
+											<div >
+												<% if @current_date.month == @date.month %>
+													<% @group_appointments[@current_date.mday].each do |e| %>
+														 <div class= <%= types_hash.key(e.appointment_type).to_s %> >
+															  <%= e.start_time %> - <%= e.end_time %> | <%= e.description %>
+														 </div>
+													<% end %>
+												<% end %>
+											</div>
+										</td>
+								<% end %>
+						  </tr>
+						<% end %>
+					</table>
+				</div>
+
+				 <div class="modalDialog" id="EventModal">
+					 <div class="row">
+						 <div class="col-lg-10 col-centered">
+							 <div class='panel'>
+								 <div class="panel-heading">
+									 <h4 class="panel-title" >
+										 	<% if @group.nil? %>
+												Create a new group appointment
+											<% else %>
+												Create a new appointment for the users in <%= @group.name %>
+											<% end %>
+									</h4>
+								 </div>
+								<div title="Close" class="close" onclick="closeModal()">X</div>
+								<div class="panel-body">
+									<form action='/createAppointment' method="post">
+									 <div class="form-group">
+										 <div class="control-group">
+												<input class="form-control" type="text" id="description" name="description" placeholder="Enter event description">
+										 </div>
+										 <div class="control-group">
+ 											<label for="dselect">Date</label>
+ 											<input class="form-control" type="text" id="dselect" name="event_date" value="">
+ 										 </div>
+										 <div class="control-group">
+											 <label for="startTimeSelect">Start time</label>
+											 <input class="form-control" type="text" id="startTime" name="start_time">
+											</div>
+											<div class="control-group">
+												<label for="endTimeSelect">End time</label>
+												<input class="form-control" type="text" id="endTime" name="end_time">
+											</div>
+											<div class="control-group">
+												<label for="typeSelect">Select type</label>
+												<select id="typeSelect" name="appointment_type">
+													<% types_hash.keys.each do |k| %>
+					                  <option value= "<%=types_hash[k] %>"><%= k.to_s %></option>
+					                <% end %>
+												</select>
+											</div>
+											<% if @group.nil? %>
+												<div class="control-group">
+													<label for="groups">Select group</label>
+													<select id="groups" name="group_id">
+														<% @user_groups.each do |g| %>
+															<option value= "<%= g.id %>"><%= g.name %></option>
+														<% end %>
+													</select>
+												</div>
+											<% else %>
+												<div hidden="hidden">
+													<input type="text" id="group_id" name="group_id" value="<%= @group.id %>">
+												</div>
+											<% end %>
+										</div>
+										<div class="control-group">
+											 <button type="submit" class="btn btn-success btn-primary">
+												 Save
+											 </button>
+										</div>
+									</form>
+							 </div>
+						 </div>
+					 </div>
+				 </div>
+			 </div>
+
+				 <% end %>
+
+				 <div class="modalDialog" id="GroupModal">
+					 <div class="row">
+						 <div class="col-lg-10 col-centered">
+							 <div class='panel'>
+								 <div class="panel-heading">
+									 <h4 class="panel-title" >
+										Create a new group
+									</h4>
+								 </div>
+			 				 	<a href="" title="Close" class="close" onclick='closeGroupModal()'>X</a>
+								<div class="panel-body">
+								 <form action='/createGroup' method="post">
+
+									 <div class="form-group">
+										 <div class="control-group">
+												<input class="form-control" type="text" id="groupName" name="groupName" placeholder="Enter group name">
+										 </div>
+										 <div class="control-group">
+												<input class="form-control" type="text" id="description" name="description" placeholder="Enter short group description">
+											</div>
+											<div class="control-group">
+												<label for="membersSelect">Add group members</label>
+												<select multiple="multiple" id="membersSelect" name="membersSelect[]">
+													<% User.get_users_without(@user.id).each do |k| %>
+														<option value= "<%= k.id %>"><%= k.name %></option>
+													<% end %>
+												</select>
+											</div>
+										</div>
+										<div class="control-group">
+											 <button type="submit" class="btn btn-success btn-primary">
+												 Save
+											 </button>
+										</div>
+							 	  </form>
+							 </div>
+						 </div>
+					 </div>
+				 </div>
+			 </div>
+
+		 </div>
+		 </div>
+	 </div>
+			<div class="col-lg-1">
+
+					<a href="/ng/<%= @group.id unless @group.nil? %>"> <img src="/img/right-arrow.png" class="centered"></a>
+
+			</div>
+		</div>
+	</div>
+</div>

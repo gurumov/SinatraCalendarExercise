@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/css/bootstrap.css" rel="stylesheet" media="screen" >
+    <link href="/css/calendar.css" rel="stylesheet" media="screen" />
+    <script src="/js/calendar.js" type="text/javascript" rel="text/javascript"></script>
+    <title>
+      Test
+    </title>
+  </head>
+  <body>
+     <div class="container-fluid">
+       <div class="row">
+         <div class="col-lg-12">
+           <nav class="navbar navbar-default navbar-static-top " role="navigation">
+             <div class="navbar-header">
+
+               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+               </button>
+              <a class="navbar-brand" href="#">AMAZING CITY CALENDAR!!!</a>
+             </div>
+
+             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+               <% if not logged? %>
+                <ul class="nav navbar-nav navbar-right">
+                   <li><a href="/registration">Sign Up</a></li>
+                   <li class="dropdown">
+                     <a href="#" class="dropdown-toggle" onclick="drop()">Login <b class="caret"></b></a>
+                     <ul class="dropdown-menu" id="drpdown">
+                       <li>
+                       <div class="panel panel-default">
+                         	<div class="panel-body">
+                             <form action="/login" method="post">
+                               <div class="form-group">
+                                 <div class="row">
+                                    <input class="form-control" type="text" id="email" name="email" placeholder="Enter email">
+                                 </div>
+                               </div>
+                               <div class="form-group">
+                                 <div class = "row">
+                                   <input class="form-control" type="password" id="password" name="password" placeholder="Enter password">
+                                 </div>
+                               </div>
+                               <div class="form-group">
+                                 <div class="row">
+                                   <input class="btn btn-success pull-right" type="submit" value="Login">
+                                </div>
+                              </div>
+                           </form>
+                         </div>
+                       </div>
+                     </li>
+                     </ul>
+                   </li>
+                 </ul>
+               <% else %>
+                 <ul class="nav navbar-nav navbar-right navv">
+                   <li>
+                      <a href="/logout"> Logout </a>
+                   </li>
+                 </ul>
+                 <ul class="nav navbar-nav navbar-right">
+                   <div class="nav nav-pills">
+                     <% types_hash.keys.each do |k| %>
+                       <li class="top <%= k.to_s %>" >
+                         <a href="/dailyView"> <span class="badge pull-right"> <%= mixed_daily_appointments_of_type(types_hash[k]).length %> </span> <%= k.to_s %> </a>
+            		       </li>
+                     <% end %>
+                   </div>
+                 </ul>
+              <% end %>
+             </div>
+            </nav>
+          </div>
+        </div>
+        <div class= "row">
+
+          <%= yield %>
+
+        </div>
+      </div>
+    </body>
+  </html>

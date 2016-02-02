@@ -1,0 +1,213 @@
+.navbar {
+  background-color: #66ccff;
+  color: white;
+  height: 52px;
+}
+
+.navbar-nav {
+  color: white;
+
+}
+
+
+
+
+.modalDialog {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	visibility: hidden;
+}
+
+.greetings {
+  text-align: center;
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: blue;
+}
+
+
+.modalDialog:target {
+	opacity:1;
+	pointer-events: auto;
+}
+
+.modalDialog > div {
+	width: 400px;
+	position: relative;
+	margin: 10% auto;
+	padding: 5px 20px 13px 20px;
+	border-radius: 10px;
+	background: white;
+}
+
+
+
+.close {
+	background: black;
+	color: white;
+	line-height: 25px;
+	position: absolute;
+	right: -12px;
+	text-align: center;
+	top: -1px;
+	width: 24px;
+	text-decoration: none;
+	font-weight: bold;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+}
+
+.close:hover { background: #00d9ff; }
+
+
+
+.nav.nav-pils > li{
+  margin-bottom: 0px;
+
+  margin-top: 10px;
+}
+
+.nav.nav-pils > li > a:hover {
+  background-color: green;
+}
+
+
+
+.top{
+  margin-top: 11px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.top > a {
+  color: white;
+}
+.todo {
+    background-color: #ff66ff;
+}
+
+.urgent{
+  background-color: #ff3333;
+}
+
+.other{
+  background-color: #cc00cc;
+}
+
+.work{
+  background-color: #ff9933;
+}
+
+.all{
+  background-color: #3399ff;
+}
+
+.university {
+  background-color: #39e600;
+}
+
+.meeting {
+  background-color: #3333ff;
+}
+
+
+.navbar-nav > li {
+  margin-bottom: 0px;
+
+}
+
+.navbar-nav > li > a {
+  color: white;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+  text-decoration: none;
+  background-color: inherit;
+}
+
+.cell {
+  position: relative;
+  height: 150px;
+  min-width: 220px;
+}
+
+.single-cell {
+  position: relative;
+  height: 70px;
+  min-width: 40px;
+}
+
+.date.weekend {
+  background-color: red;
+}
+
+.date.today {
+  background-color: orange;
+  border-color: orange;
+}
+
+.cell.past {
+  background-color: rgba(179, 179, 179, 0.5);
+}
+
+.arrow {
+  padding-top: 200px;
+}
+
+.dropdown-menu {
+  min-width: 300px;
+  padding: 5px 5px;
+}
+
+.col-centered {
+  float: none;
+  margin: auto auto;
+
+}
+
+.control-group {
+  margin-top: 5px;
+}
+.panel.bordered {
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+}
+.date {
+  float:right;
+  background-color: gray;
+  height: 20px;
+  width: 20px;
+  color: white;
+  text-align: center;;
+}
+
+.day {
+  min-height: 30px;
+  width: 14%;
+  background-color: #66ccff;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+}
+
+.today {
+  border-style: solid;
+  border-color: blue;
+}
+
+.nav-tabs, .nav-pills {
+    text-align:center;
+}
+
+.nav-tabs > li {
+    float:none;
+    display:inline-block;
+}

@@ -1,0 +1,38 @@
+<div class="col-lg-6 col-centered">
+  <div class="panel bordered">
+    <div class="panel-heading">
+      <h2 class="panel-title">
+        Registration form:
+      </h2>
+    </div>
+    <div class="panel-body">
+      <form action="/registration" method="post">
+        <div class="control-group">
+          <input class="form-control" type="email" name="email"  placeholder="Enter your email address"/>
+        </div>
+        <div class="control-group">
+          <input class="form-control" type="password" name="password" placeholder="Enter your password"/>
+        </div>
+        <div class="control-group">
+          <input class="form-control" type="password" name="password_repeated"  placeholder="Repeat password"/>
+        </div>
+        <div class="control-group">
+          <input class="form-control" type="text" name="username"  placeholder="Enter your username"/>
+        </div>
+        <div class="control-group">
+          <label for="account_type"> Choose a type of account </label>
+          <select name="account_type">
+            <option value="1">Student's Account</option>
+            <option value="2">Teacher's Account</option>
+            <option value="3">Admin's Account</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <button type="submit" class="btn btn-success">
+            Let's go!
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
